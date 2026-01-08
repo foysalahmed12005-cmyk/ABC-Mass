@@ -23,7 +23,25 @@ table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
 th { background: #343a40; color: white; }
 
-.col-green { background-color: #e8f5e9; }
+.col-green { /* বাজার এবং অগ্রিম কলামের জন্য কালো রঙ */
+.col-green { 
+    background-color: #000000 !important; /* ব্যাকগ্রাউন্ড একদম কালো */
+    color: #ffffff !important; /* লেখার রঙ সাদা (যাতে পরিষ্কার বোঝা যায়) */
+    font-weight: bold;
+}
+
+/* পিডিএফ প্রিন্ট করার সময় রঙ যাতে কালো থাকে */
+@media print {
+    .col-green {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    th {
+        background-color: #343a40 !important;
+        color: white !important;
+    }
+}}
 .col-blue { background-color: #e3f2fd; font-weight: bold; }
 .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
 .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
