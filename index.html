@@ -6,237 +6,221 @@
 <title>ABC MASS Manager</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-    body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
-    .container { max-width: 1000px; background: white; padding: 15px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-    h1 { text-align: center; color: #0056b3; margin-bottom: 5px; text-transform: uppercase; font-size: 22px; }
-    
-    .date-picker { text-align: center; margin-bottom: 15px; }
-    select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; height: 35px; margin: 2px; }
+body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
+.container { max-width: 1200px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative; }
+h1 { text-align: center; color: #0056b3; margin-bottom: 5px; text-transform: uppercase; }
+.date-picker { text-align: center; margin-bottom: 20px; }
+select { padding: 5px 15px; border-radius: 5px; border: 1px solid #0056b3; font-weight: bold; background: white; cursor: pointer; }
 
-    .bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; background: #fff3e0; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffe0b2; }
-    .bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; text-align: center; }
-    .bill-grid input { height: 35px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-top: 4px; font-size: 14px; }
+.bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; background: #fff3e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffe0b2; }
+.bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; }
+.bill-grid input { padding: 5px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; }
 
-    .summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
-    .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
+.summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
+.rate-card { background: #0056b3; color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; }
 
-    .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; table-layout: fixed; }
-    
-    /* শুধুমাত্র উপরের ঘরগুলো কালো করার জন্য */
-    th { 
-        background-color: #343a40 !important; 
-        color: #ffffff !important; 
-        border: 1px solid #ccc;
-        padding: 12px 2px !important;
-        text-align: center;
-        font-size: 14px;
-    }
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+th { background: #343a40; color: white; font-weight: normal; }
 
-    /* নিচের ঘরগুলো বড় করার জন্য padding এবং height বাড়ানো হয়েছে */
-    td { border: 1px solid #ccc; padding: 8px !important; text-align: center; vertical-align: middle; height: 50px; }
+.col-green { background-color: #e8f5e9; color: #2e7d32; font-weight: bold; }
+.col-blue { background-color: #e3f2fd; color: #0056b3; font-weight: bold; }
+.col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
+.col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
 
-    /* নামের কলাম */
-    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 10px !important; width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Total Row Style */
+.total-row { background: #f1f3f5; font-weight: bold; font-size: 14px; }
 
-    /* ইনপুট বক্স সুন্দর করার জন্য */
-    td input { 
-        width: 90%; 
-        height: 38px; 
-        text-align: center; 
-        border: 1px solid #ddd; 
-        border-radius: 4px; 
-        font-size: 15px;
-    }
+.footer-credit { text-align: center; margin-top: 30px; font-size: 14px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
+.footer-credit span { color: #0056b3; }
 
-    /* রেজাল্ট কলাম */
-    .col-cost { font-weight: bold; color: #333; font-size: 14px; }
-    .col-result-pabe { color: #1b5e20; font-weight: bold; background: #e8f5e9; font-size: 13px; }
-    .col-result-dibe { color: #b71c1c; font-weight: bold; background: #ffebee; font-size: 13px; }
-
-    .total-row { background: #f1f3f5; font-weight: bold; height: 45px; }
-    .footer-credit { text-align: center; margin-top: 15px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
-
-    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-    .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; color: white; }
-    .btn-calc { background: #28a745; }
-    .btn-pdf { background: #dc3545; }
-
-    @media print {
-        th { background-color: #343a40 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
-        .btn-area, select { display: none !important; }
-    }
+.btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; }
+.btn-calc { background: #28a745; }
+.btn-pdf { background: #dc3545; }
 </style>
 </head>
 <body>
 
 <div class="container" id="report-area">
-    <h1>ABC MASS</h1>
-    <div class="date-picker">
-        <span id="displayMonth" style="font-weight: bold; font-size: 18px;"></span> 
-        <span id="displayYear" style="font-weight: bold; font-size: 18px;"></span>
-        <br>
-        <select id="selectMonth" onchange="updateDateDisplay()">
-            <option value="জানুয়ারি">জানুয়ারি</option>
-            <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
-            <option value="মার্চ">মার্চ</option>
-            <option value="এপ্রিল">এপ্রিল</option>
-            <option value="মে">মে</option>
-            <option value="জুন">জুন</option>
-            <option value="জুলাই">জুলাই</option>
-            <option value="আগস্ট">আগস্ট</option>
-            <option value="সেপ্টেম্বর" selected>সেপ্টেম্বর</option>
-            <option value="অক্টোবর">অক্টোবর</option>
-            <option value="নভেম্বর">নভেম্বর</option>
-            <option value="ডিসেম্বর">ডিসেম্বর</option>
-        </select>
-        <select id="selectYear" onchange="updateDateDisplay()">
-            <option value="২০২৪">২০২৪</option>
-            <option value="২০২৫" selected>২০২৫</option>
-            <option value="২০২৬">২০২৬</option>
-        </select>
-    </div>
-
-    <div class="summary-box">
-        <div class="rate-card">মিল রেট: <span id="mealRateDisplay">০.০০</span></div>
-    </div>
-
-    <div class="bill-grid">
-        <div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
-        <div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
-        <div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
-        <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
-        <div>ওয়াইফাই <input type="number" id="wifiBill" value="1000"></div>
-        <div>ময়লা <input type="number" id="garbageBill" value="150"></div>
-        <div>খালা বিল <input type="number" id="wages" value="6000"></div>
-    </div>
-
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 25%;">নাম</th>
-                    <th style="width: 10%;">মিল</th>
-                    <th style="width: 12%;">বাজার</th>
-                    <th style="width: 12%;">জমা</th>
-                    <th style="width: 12%;">ভাড়া</th>
-                    <th style="width: 12%;">মোট</th>
-                    <th style="width: 17%;">পাওনা</th>
-                </tr>
-            </thead>
-            <tbody id="memberRows"></tbody>
-            <tfoot>
-                <tr class="total-row">
-                    <td>মোট:</td>
-                    <td id="grandTotalMeal">0</td>
-                    <td id="grandTotalBazar">0</td>
-                    <td id="grandTotalAdv">0</td>
-                    <td id="grandTotalRent">0</td>
-                    <td id="grandTotalCost">0</td>
-                    <td>-</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div class="footer-credit">Designed & Created by Foysal Ahammed</div>
+<h1>ABC MASS</h1>
+<div class="date-picker">
+<select id="selectMonth">
+<option value="জানুয়ারি">জানুয়ারি</option>
+<option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
+<option value="মার্চ">মার্চ</option>
+<option value="এপ্রিল">এপ্রিল</option>
+<option value="মে">মে</option>
+<option value="জুন">জুন</option>
+<option value="জুলাই">জুলাই</option>
+<option value="আগস্ট">আগস্ট</option>
+<option value="সেপ্টেম্বর" selected>সেপ্টেম্বর</option>
+<option value="অক্টোবর">অক্টোবর</option>
+<option value="নভেম্বর">নভেম্বর</option>
+<option value="ডিসেম্বর">ডিসেম্বর</option>
+</select>
+<select id="selectYear">
+<option value="২০২৪">২০২৪</option>
+<option value="২০২৫" selected>২০২৫</option>
+<option value="২০২৬">২০২৬</option>
+<option value="২০২৭">২০২৭</option>
+<option value="২০২৮">২০২৮</option>
+<option value="২০২৯">২০২৯</option>
+<option value="২০৩০">২০৩০</option>
+</select>
 </div>
 
+<div class="summary-box">
+<div class="rate-card">মিল রেট: <span id="mealRateDisplay">০.০০</span></div>
+</div>
+
+<div class="bill-grid">
+<div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
+<div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
+<div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
+<div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
+<div>ইন্টারনেট <input type="number" id="wifiBill" value="1000"></div>
+<div>ময়লা বিল <input type="number" id="garbageBill" value="150"></div>
+<div>খালা বিল <input type="number" id="wages" value="6000"></div>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>নাম</th>
+<th>মিল</th>
+<th class="col-green">বাজার</th>
+<th class="col-green">জমা</th>
+<th>বাসা ভাড়া</th>
+<th class="col-blue">মাসের মোট খরচ</th>
+<th>নিট পাওনা/দেনা</th>
+</tr>
+</thead>
+<tbody id="memberRows"></tbody>
+<tfoot>
+<tr class="total-row">
+<td>TOTAL:</td>
+<td id="grandTotalMeal">0</td>
+<td id="grandTotalBazar">0</td>
+<td id="grandTotalAdv">0</td>
+<td id="grandTotalRent">0</td>
+<td id="grandTotalCost">0</td>
+<td>-</td>
+</tr>
+</tfoot>
+</table>
+</div>
+
+<div class="footer-credit">
+Designed & Created by <span>Foysal Ahammed</span>
+</div>
+</div>
+
+<div class="container" style="margin-top: 10px; box-shadow: none; background: transparent; padding: 0;">
 <div class="btn-area">
-    <button class="btn btn-calc" onclick="calculate()">হিসাব আপডেট</button>
-    <button class="btn btn-pdf" onclick="downloadPDF()">PDF ডাউনলোড</button>
+<button class="btn btn-calc" onclick="calculate()">হিসাব আপডেট করুন</button>
+<button class="btn btn-pdf" onclick="downloadPDF()">PDF ডাউনলোড</button>
+</div>
 </div>
 
 <script>
 const membersList = [
-    { name: "Mr. Aminul", rent: 1760 }, { name: "Mr. Utsob", rent: 1760 },
-    { name: "Mr. Foysal", rent: 1760 }, { name: "Mr. Morshed", rent: 1760 },
-    { name: "Mr. Rejaul", rent: 2085 }, { name: "Mr. Arif", rent: 2085 },
-    { name: "Mr. Mintu", rent: 2085 }, { name: "Mr. Tarak", rent: 2235 },
-    { name: "Mr. Rakib", rent: 2235 }, { name: "Mr. Zia", rent: 2235 }
+{ name: "Mr. Aminul", rent: 1760 },
+{ name: "Mr. Utsob", rent: 1760 },
+{ name: "Mr. Foysal", rent: 1760 },
+{ name: "Mr. Morshed", rent: 1760 },
+{ name: "Mr. Rejaul", rent: 2085 },
+{ name: "Mr. Arif", rent: 2085 },
+{ name: "Mr. Mintu", rent: 2085 },
+{ name: "Mr. Tarak", rent: 2235 },
+{ name: "Mr. Rakib", rent: 2235 },
+{ name: "Mr. Zia", rent: 2235 }
 ];
-
-function updateDateDisplay() {
-    document.getElementById('displayMonth').innerText = document.getElementById('selectMonth').value;
-    document.getElementById('displayYear').innerText = document.getElementById('selectYear').value;
-}
-updateDateDisplay();
 
 const tbody = document.getElementById('memberRows');
 membersList.forEach((m, i) => {
-    tbody.innerHTML += `
-    <tr>
-        <td>${m.name}</td>
-        <td><input type="number" id="mMeal${i}" value="0"></td>
-        <td><input type="number" id="mBazar${i}" value="0"></td>
-        <td><input type="number" id="mAdv${i}" value="0"></td>
-        <td><input type="number" id="mRent${i}" value="${m.rent}"></td>
-        <td id="mTotal${i}" class="col-cost">0</td>
-        <td id="mFinal${i}">-</td>
-    </tr>`;
+tbody.innerHTML += `
+<tr>
+<td><b>${m.name}</b></td>
+<td><input type="number" id="mMeal${i}" style="width:45px" value="0"></td>
+<td class="col-green"><input type="number" id="mBazar${i}" style="width:65px" value="0"></td>
+<td class="col-green"><input type="number" id="mAdv${i}" style="width:65px" value="0"></td>
+<td><input type="number" id="mRent${i}" style="width:65px" value="${m.rent}"></td>
+<td id="mTotal${i}" class="col-blue">0.00</td>
+<td id="mFinal${i}">-</td>
+</tr>`;
 });
 
 function calculate() {
-    let totalBazar = 0, totalMeal = 0, totalAdv = 0, totalRent = 0, totalCost = 0;
-    let fixedSum = (parseFloat(document.getElementById('gasBill').value) || 0) +
-                   (parseFloat(document.getElementById('waterBill').value) || 0) +
-                   (parseFloat(document.getElementById('currentBill').value) || 0) +
-                   (parseFloat(document.getElementById('waterBottle').value) || 0) +
-                   (parseFloat(document.getElementById('wifiBill').value) || 0) +
-                   (parseFloat(document.getElementById('garbageBill').value) || 0) +
-                   (parseFloat(document.getElementById('wages').value) || 0);
+let totalBazar = 0, totalMeal = 0, totalAdv = 0, totalRent = 0, totalCost = 0;
+let fixedSum = (parseFloat(document.getElementById('gasBill').value) || 0) +
+(parseFloat(document.getElementById('waterBill').value) || 0) +
+(parseFloat(document.getElementById('currentBill').value) || 0) +
+(parseFloat(document.getElementById('waterBottle').value) || 0) +
+(parseFloat(document.getElementById('wifiBill').value) || 0) +
+(parseFloat(document.getElementById('garbageBill').value) || 0) +
+(parseFloat(document.getElementById('wages').value) || 0);
 
-    let perHeadFixed = fixedSum / membersList.length;
+let perHeadFixed = fixedSum / membersList.length;
 
-    membersList.forEach((_, i) => {
-        totalBazar += parseFloat(document.getElementById(`mBazar${i}`).value) || 0;
-        totalMeal += parseFloat(document.getElementById(`mMeal${i}`).value) || 0;
-        totalAdv += parseFloat(document.getElementById(`mAdv${i}`).value) || 0;
-        totalRent += parseFloat(document.getElementById(`mRent${i}`).value) || 0;
-    });
+// সামারি হিসাবের জন্য লুপ
+membersList.forEach((_, i) => {
+totalBazar += parseFloat(document.getElementById(`mBazar${i}`).value) || 0;
+totalMeal += parseFloat(document.getElementById(`mMeal${i}`).value) || 0;
+totalAdv += parseFloat(document.getElementById(`mAdv${i}`).value) || 0;
+totalRent += parseFloat(document.getElementById(`mRent${i}`).value) || 0;
+});
 
-    let mealRate = totalMeal > 0 ? (totalBazar / totalMeal) : 0;
-    document.getElementById('mealRateDisplay').innerText = mealRate.toFixed(2);
+let mealRate = totalMeal > 0 ? (totalBazar / totalMeal) : 0;
+document.getElementById('mealRateDisplay').innerText = mealRate.toFixed(2);
 
-    membersList.forEach((_, i) => {
-        let meal = parseFloat(document.getElementById(`mMeal${i}`).value) || 0;
-        let bazar = parseFloat(document.getElementById(`mBazar${i}`).value) || 0;
-        let adv = parseFloat(document.getElementById(`mAdv${i}`).value) || 0;
-        let rent = parseFloat(document.getElementById(`mRent${i}`).value) || 0;
+// প্রত্যেকের এবং গ্র্যান্ড টোটাল হিসাব
+membersList.forEach((_, i) => {
+let meal = parseFloat(document.getElementById(`mMeal${i}`).value) || 0;
+let bazar = parseFloat(document.getElementById(`mBazar${i}`).value) || 0;
+let adv = parseFloat(document.getElementById(`mAdv${i}`).value) || 0;
+let rent = parseFloat(document.getElementById(`mRent${i}`).value) || 0;
 
-        let myCost = (meal * mealRate) + perHeadFixed + rent;
-        totalCost += myCost;
-        let balance = (bazar + adv) - myCost;
+let myCost = (meal * mealRate) + perHeadFixed + rent;
+totalCost += myCost;
+let myPaid = bazar + adv;
+let balance = myPaid - myCost;
 
-        document.getElementById(`mTotal${i}`).innerText = Math.round(myCost);
-        let finalCell = document.getElementById(`mFinal${i}`);
-        if (balance >= 0) {
-            finalCell.innerText = "পাবে: " + Math.round(balance);
-            finalCell.className = "col-result-pabe";
-        } else {
-            finalCell.innerText = "দিবে: " + Math.abs(Math.round(balance));
-            finalCell.className = "col-result-dibe";
-        }
-    });
+document.getElementById(`mTotal${i}`).innerText = myCost.toFixed(2);
+let finalCell = document.getElementById(`mFinal${i}`);
+finalCell.className = "";
+if (balance >= 0) {
+finalCell.innerText = "পাবে: " + balance.toFixed(2);
+finalCell.classList.add("col-result-pabe");
+} else {
+finalCell.innerText = "দিবে: " + Math.abs(balance).toFixed(2);
+finalCell.classList.add("col-result-dibe");
+}
+});
 
-    document.getElementById('grandTotalMeal').innerText = totalMeal;
-    document.getElementById('grandTotalBazar').innerText = Math.round(totalBazar);
-    document.getElementById('grandTotalAdv').innerText = Math.round(totalAdv);
-    document.getElementById('grandTotalRent').innerText = Math.round(totalRent);
-    document.getElementById('grandTotalCost').innerText = Math.round(totalCost);
+// ফুটার টোটাল আপডেট
+document.getElementById('grandTotalMeal').innerText = totalMeal;
+document.getElementById('grandTotalBazar').innerText = totalBazar.toFixed(0);
+document.getElementById('grandTotalAdv').innerText = totalAdv.toFixed(0);
+document.getElementById('grandTotalRent').innerText = totalRent.toFixed(0);
+document.getElementById('grandTotalCost').innerText = totalCost.toFixed(0);
 }
 
 function downloadPDF() {
-    calculate();
-    const element = document.getElementById('report-area');
-    const opt = {
-        margin: 0.2,
-        filename: 'ABC_MASS_Report.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
+calculate();
+const element = document.getElementById('report-area');
+const month = document.getElementById('selectMonth').value;
+const year = document.getElementById('selectYear').value;
+const opt = {
+margin: 0.2,
+filename: `ABC_MASS_Report_${month}_${year}.pdf`,
+jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+};
+html2pdf().set(opt).from(element).save();
 }
 </script>
+
 </body>
 </html>
