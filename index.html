@@ -6,116 +6,80 @@
 <title>ABC MASS Manager</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
-.container { max-width: 1000px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-h1 { text-align: center; color: #0056b3; margin: 0 0 5px 0; text-transform: uppercase; }
-.date-picker { text-align: center; margin-bottom: 15px; }
-select, input { /* ইনপুট বক্স এবং নামের ঘর ছোট করার জন্য */
-select, input { 
-    padding: 5px; 
-    border-radius: 5px; 
-    border: 1px solid #ccc; 
-    height: 30px !important; /* এখানে উচ্চতা ৩০ পিক্সেল করে দেওয়া হলো */
-}
-
-/* নামের কলামের লেখাগুলো বামে এবং সুন্দর দেখানোর জন্য */
-td:first-child { 
-    height: auto !important; 
-    text-align: left !important; 
-    padding-left: 10px !important;
-} }
-
-.bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; background: #fff3e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffe0b2; }
-.bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; }
-
-.summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
-.rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
-
-.table-wrapper { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-/* সবগুলো ঘর ঠিক করা এবং শুধু নামের কলামের উচ্চতা স্বাভাবিক রাখা */
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px !important;
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* মেম্বারদের নামের কলাম ছোট রাখার জন্য */
-td:first-child {
-    height: auto !important;
-    white-space: nowrap;
-}
-
-/* শুধুমাত্র হিসাবের ঘরগুলো (ইনপুট ও রেজাল্ট) বড় রাখার জন্য */
-input, .col-blue, .col-result-pabe, .col-result-dibe {
-    height: 45px !important; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* মোট খরচ এবং পাওনা/দেনা কলামের টেক্সট ও ঘর বড় করা */
-.col-blue, .col-result-pabe, .col-result-dibe {
-    font-size: 14px;
-    font-weight: bold;
-    min-width: 110px; /* কলামের প্রস্থ বাড়ানো হয়েছে */
-} { border: 1px solid #ccc; padding: 6px; text-align: center; }
-th { background: #343a40; color: white; }
-
-.col-green { /* বাজার এবং অগ্রিম কলামের জন্য কালো রঙ */
-.col-green { 
-    background-color: #000000 !important; /* ব্যাকগ্রাউন্ড একদম কালো */
-    color: #ffffff !important; /* লেখার রঙ সাদা (যাতে পরিষ্কার বোঝা যায়) */
-    font-weight: bold;
-}
-
-/* পিডিএফ প্রিন্ট করার সময় রঙ যাতে কালো থাকে */
-@media print {
-    .col-green {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        -webkit-print-color-adjust: exact; 
+    body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
+    .container { max-width: 1000px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #0056b3; margin: 0 0 5px 0; text-transform: uppercase; }
+    .date-picker { text-align: center; margin-bottom: 15px; }
+    
+    /* উপরের ইনপুট বক্সগুলো ছোট রাখার জন্য */
+    .bill-grid input, select { 
+        padding: 5px; 
+        border-radius: 5px; 
+        border: 1px solid #ccc; 
+        height: 30px !important; 
     }
-    th {
-        background-color: #343a40 !important;
-        color: white !important;
+
+    .bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; background: #fff3e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffe0b2; }
+    .bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; }
+
+    .summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
+    .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
+
+    .table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    
+    th, td { border: 1px solid #ccc; padding: 8px !important; text-align: center; vertical-align: middle; }
+    th { background: #343a40; color: white; }
+
+    /* নামের কলাম (১ম কলাম) স্বাভাবিক রাখার জন্য */
+    td:first-child {
+        height: auto !important;
+        white-space: nowrap;
+        text-align: left;
+        padding-left: 10px !important;
+        font-weight: bold;
     }
-}}
-.col-blue { /* মোট খরচ কলাম কালো করার জন্য */
-.col-blue { 
-    background-color: #000000 !important; /* কালো ব্যাকগ্রাউন্ড */
-    color: #ffffff !important; /* সাদা লেখা */
-    font-weight: bold;
-}
 
-/* পিডিএফ প্রিন্ট সেটিংস (মোট খরচ কলামের জন্য) */
-@media print {
-    .col-blue {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        -webkit-print-color-adjust: exact; 
+    /* টেবিলের ভেতরের ইনপুট বক্সগুলোর সাইজ */
+    td input {
+        height: 35px !important;
+        width: 100% !important;
+        box-sizing: border-box;
     }
-} }
-.col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
-.col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
 
-.total-row { background: #f1f3f5; font-weight: bold; }
-.footer-credit { text-align: center; margin-top: 20px; font-size: 12px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
+    /* বাজার, জমা এবং মোট খরচ কলাম কালো করার জন্য */
+    .col-green, .col-blue { 
+        background-color: #000000 !important; 
+        color: #ffffff !important; 
+        font-weight: bold;
+        min-width: 100px;
+        height: 45px;
+    }
 
-.btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; max-width: 1000px; margin-left: auto; margin-right: auto; }
-.btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
-.btn-calc { background: #28a745; }
-.btn-pdf { background: #dc3545; }
+    /* পাওনা/দেনার ঘর বড় করার জন্য */
+    .col-result-pabe, .col-result-dibe {
+        font-size: 14px;
+        font-weight: bold;
+        height: 45px;
+        min-width: 110px;
+    }
 
-/* PDF এর জন্য বিশেষ সেটিং */
-@media print {
-    input { border: none; background: transparent; appearance: none; -moz-appearance: textfield; pointer-events: none; width: auto !important; }
-    .btn-area, select { display: none !important; }
-    .container { box-shadow: none; width: 100%; padding: 0; margin: 0; }
-    body { background: white; }
-    .bill-grid { background: #f9f9f9; border: 1px solid #ddd; }
-}
+    .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; }
+    .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; }
+
+    .total-row { background: #f1f3f5; font-weight: bold; height: 40px; }
+    .footer-credit { text-align: center; margin-top: 20px; font-size: 12px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
+
+    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
+    .btn-calc { background: #28a745; }
+    .btn-pdf { background: #dc3545; }
+
+    @media print {
+        .col-green, .col-blue { background-color: #000000 !important; color: #ffffff !important; -webkit-print-color-adjust: exact; }
+        .btn-area, select { display: none !important; }
+        input { border: none; background: transparent; }
+    }
 </style>
 </head>
 <body>
@@ -144,7 +108,6 @@ th { background: #343a40; color: white; }
             <option value="২০২৪">২০২৪</option>
             <option value="২০২৫" selected>২০২৫</option>
             <option value="২০২৬">২০২৬</option>
-            <option value="২০২৭">২০২৭</option>
         </select>
     </div>
 
@@ -154,7 +117,7 @@ th { background: #343a40; color: white; }
 
     <div class="bill-grid">
         <div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
-        <div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
+        <div>पानी বিল <input type="number" id="waterBill" value="1200"></div>
         <div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
         <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
         <div>ইন্টারনেট <input type="number" id="wifiBill" value="1000"></div>
@@ -219,11 +182,11 @@ const tbody = document.getElementById('memberRows');
 membersList.forEach((m, i) => {
     tbody.innerHTML += `
     <tr>
-        <td><b>${m.name}</b></td>
-        <td><input type="number" id="mMeal${i}" style="width:45px" value="0"></td>
-        <td class="col-green"><input type="number" id="mBazar${i}" style="width:60px" value="0"></td>
-        <td class="col-green"><input type="number" id="mAdv${i}" style="width:60px" value="0"></td>
-        <td><input type="number" id="mRent${i}" style="width:60px" value="${m.rent}"></td>
+        <td>${m.name}</td>
+        <td><input type="number" id="mMeal${i}" value="0"></td>
+        <td class="col-green"><input type="number" id="mBazar${i}" value="0"></td>
+        <td class="col-green"><input type="number" id="mAdv${i}" value="0"></td>
+        <td><input type="number" id="mRent${i}" value="${m.rent}"></td>
         <td id="mTotal${i}" class="col-blue">0</td>
         <td id="mFinal${i}">-</td>
     </tr>`;
@@ -289,11 +252,9 @@ function downloadPDF() {
         margin: [0.3, 0.3],
         filename: `ABC_MASS_${month}_${year}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
-    
-    // ডাউনলোড শুরু
     html2pdf().set(opt).from(element).save();
 }
 </script>
