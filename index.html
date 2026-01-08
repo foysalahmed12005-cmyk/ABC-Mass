@@ -7,78 +7,50 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
     body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
-    .container { max-width: 1000px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-    h1 { text-align: center; color: #0056b3; margin: 0 0 5px 0; text-transform: uppercase; }
-    .date-picker { text-align: center; margin-bottom: 15px; }
+    .container { max-width: 1000px; background: white; padding: 15px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #0056b3; margin-bottom: 10px; text-transform: uppercase; font-size: 22px; }
     
-    /* উপরের ইনপুট বক্সগুলো ছোট রাখার জন্য */
-    .bill-grid input, select { 
-        padding: 5px; 
-        border-radius: 5px; 
-        border: 1px solid #ccc; 
-        height: 30px !important; 
-    }
+    .date-picker { text-align: center; margin-bottom: 15px; }
+    select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; height: 35px; margin: 2px; }
 
-    .bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; background: #fff3e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffe0b2; }
-    .bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; }
+    .bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; background: #fff3e0; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffe0b2; }
+    .bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; text-align: center; }
+    .bill-grid input { height: 30px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-top: 4px; }
 
     .summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
     .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
 
     .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    
-    th, td { border: 1px solid #ccc; padding: 8px !important; text-align: center; vertical-align: middle; }
-    th { background: #343a40; color: white; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; }
+    th, td { border: 1px solid #ccc; padding: 6px !important; text-align: center; vertical-align: middle; }
+    th { background: #343a40; color: white; height: 35px; }
 
-    /* নামের কলাম (১ম কলাম) স্বাভাবিক রাখার জন্য */
-    td:first-child {
-        height: auto !important;
-        white-space: nowrap;
-        text-align: left;
-        padding-left: 10px !important;
-        font-weight: bold;
-    }
+    /* মেম্বারদের নামের কলাম ছোট রাখার জন্য */
+    td:first-child { width: 100px; font-weight: bold; text-align: left; background: #f9f9f9; }
 
-    /* টেবিলের ভেতরের ইনপুট বক্সগুলোর সাইজ */
-    td input {
-        height: 35px !important;
-        width: 100% !important;
-        box-sizing: border-box;
-    }
+    /* টেবিলের ভেতরের ইনপুট বক্স */
+    td input { width: 90% !important; height: 32px !important; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
 
-    /* বাজার, জমা এবং মোট খরচ কলাম কালো করার জন্য */
-    .col-green, .col-blue { 
-        background-color: #000000 !important; 
-        color: #ffffff !important; 
-        font-weight: bold;
-        min-width: 100px;
-        height: 45px;
-    }
+    /* বাজার ও জমা কলাম (কালো ব্যাকগ্রাউন্ড, সাদা লেখা) */
+    .col-black-bg { background-color: #000000 !important; color: #ffffff !important; font-weight: bold; }
+    .col-black-bg input { background-color: #222 !important; color: #fff !important; border: 1px solid #555; }
 
-    /* পাওনা/দেনার ঘর বড় করার জন্য */
-    .col-result-pabe, .col-result-dibe {
-        font-size: 14px;
-        font-weight: bold;
-        height: 45px;
-        min-width: 110px;
-    }
+    /* মোট খরচ ও রেজাল্ট ঘরগুলো বড় করা */
+    .col-blue-res { background-color: #e3f2fd; color: #0d47a1; font-weight: bold; height: 45px; font-size: 14px; }
+    .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; height: 45px; font-size: 13px; }
+    .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; height: 45px; font-size: 13px; }
 
-    .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; }
-    .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; }
-
-    .total-row { background: #f1f3f5; font-weight: bold; height: 40px; }
-    .footer-credit { text-align: center; margin-top: 20px; font-size: 12px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
+    .total-row { background: #eee; font-weight: bold; height: 35px; }
+    .footer-credit { text-align: center; margin-top: 15px; font-size: 11px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
 
     .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-    .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
+    .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; color: white; }
     .btn-calc { background: #28a745; }
     .btn-pdf { background: #dc3545; }
 
     @media print {
-        .col-green, .col-blue { background-color: #000000 !important; color: #ffffff !important; -webkit-print-color-adjust: exact; }
         .btn-area, select { display: none !important; }
-        input { border: none; background: transparent; }
+        .col-black-bg { background-color: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
     }
 </style>
 </head>
@@ -116,12 +88,12 @@
     </div>
 
     <div class="bill-grid">
-        <div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
-        <div>पानी বিল <input type="number" id="waterBill" value="1200"></div>
-        <div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
+        <div>গ্যাস <input type="number" id="gasBill" value="1080"></div>
+        <div>পানি <input type="number" id="waterBill" value="1200"></div>
+        <div>বিদ্যুৎ <input type="number" id="currentBill" value="2000"></div>
         <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
-        <div>ইন্টারনেট <input type="number" id="wifiBill" value="1000"></div>
-        <div>ময়লা বিল <input type="number" id="garbageBill" value="150"></div>
+        <div>ওয়াইফাই <input type="number" id="wifiBill" value="1000"></div>
+        <div>ময়লা <input type="number" id="garbageBill" value="150"></div>
         <div>খালা বিল <input type="number" id="wages" value="6000"></div>
     </div>
 
@@ -131,17 +103,17 @@
                 <tr>
                     <th>নাম</th>
                     <th>মিল</th>
-                    <th class="col-green">বাজার</th>
-                    <th class="col-green">জমা</th>
-                    <th>বাসা ভাড়া</th>
-                    <th class="col-blue">মোট খরচ</th>
+                    <th class="col-black-bg">বাজার</th>
+                    <th class="col-black-bg">জমা</th>
+                    <th>ভাড়া</th>
+                    <th style="background:#0d47a1; color:white;">মোট খরচ</th>
                     <th>পাওনা/দেনা</th>
                 </tr>
             </thead>
             <tbody id="memberRows"></tbody>
             <tfoot>
                 <tr class="total-row">
-                    <td>TOTAL:</td>
+                    <td>মোট:</td>
                     <td id="grandTotalMeal">0</td>
                     <td id="grandTotalBazar">0</td>
                     <td id="grandTotalAdv">0</td>
@@ -152,14 +124,11 @@
             </tfoot>
         </table>
     </div>
-
-    <div class="footer-credit">
-        Designed & Created by <span style="color: #0056b3;">Foysal Ahammed</span>
-    </div>
+    <div class="footer-credit">Designed & Created by Foysal Ahammed</div>
 </div>
 
 <div class="btn-area">
-    <button class="btn btn-calc" onclick="calculate()">হিসাব আপডেট করুন</button>
+    <button class="btn btn-calc" onclick="calculate()">হিসাব আপডেট</button>
     <button class="btn btn-pdf" onclick="downloadPDF()">PDF ডাউনলোড</button>
 </div>
 
@@ -184,10 +153,10 @@ membersList.forEach((m, i) => {
     <tr>
         <td>${m.name}</td>
         <td><input type="number" id="mMeal${i}" value="0"></td>
-        <td class="col-green"><input type="number" id="mBazar${i}" value="0"></td>
-        <td class="col-green"><input type="number" id="mAdv${i}" value="0"></td>
+        <td class="col-black-bg"><input type="number" id="mBazar${i}" value="0"></td>
+        <td class="col-black-bg"><input type="number" id="mAdv${i}" value="0"></td>
         <td><input type="number" id="mRent${i}" value="${m.rent}"></td>
-        <td id="mTotal${i}" class="col-blue">0</td>
+        <td id="mTotal${i}" class="col-blue-res">0</td>
         <td id="mFinal${i}">-</td>
     </tr>`;
 });
@@ -245,12 +214,9 @@ function calculate() {
 function downloadPDF() {
     calculate();
     const element = document.getElementById('report-area');
-    const month = document.getElementById('selectMonth').value;
-    const year = document.getElementById('selectYear').value;
-    
     const opt = {
-        margin: [0.3, 0.3],
-        filename: `ABC_MASS_${month}_${year}.pdf`,
+        margin: 0.2,
+        filename: 'ABC_MASS_Report.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
