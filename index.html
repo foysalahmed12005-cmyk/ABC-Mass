@@ -20,13 +20,26 @@ select, input { padding: 5px; border-radius: 5px; border: 1px solid #ccc; }
 
 .table-wrapper { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
-/* সবগুলো ঘর সমান বড় এবং মাঝখানে রাখার জন্য */
+/* সবগুলো ঘর ঠিক করা এবং শুধু নামের কলামের উচ্চতা স্বাভাবিক রাখা */
 th, td {
     border: 1px solid #ccc;
-    padding: 12px 8px !important; /* এখানে ৬ পিক্সেল থেকে বাড়িয়ে ১২ করা হয়েছে */
+    padding: 8px !important;
     text-align: center;
-    height: 55px; /* ঘরের উচ্চতা বাড়ানো হয়েছে */
     vertical-align: middle;
+}
+
+/* মেম্বারদের নামের কলাম ছোট রাখার জন্য */
+td:first-child {
+    height: auto !important;
+    white-space: nowrap;
+}
+
+/* শুধুমাত্র হিসাবের ঘরগুলো (ইনপুট ও রেজাল্ট) বড় রাখার জন্য */
+input, .col-blue, .col-result-pabe, .col-result-dibe {
+    height: 45px !important; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* মোট খরচ এবং পাওনা/দেনা কলামের টেক্সট ও ঘর বড় করা */
