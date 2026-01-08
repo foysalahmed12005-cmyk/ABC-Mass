@@ -21,40 +21,40 @@
     .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
 
     .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; table-layout: fixed; }
     
-    /* শুধুমাত্র উপরের হেডার কালো করার জন্য */
+    /* উপরের হেডার কালো করার জন্য */
     th { 
         background-color: #343a40 !important; 
         color: #ffffff !important; 
-        border: 1px solid #444;
-        padding: 12px 5px !important;
+        border: 1px solid #ccc;
+        padding: 10px 2px !important;
         text-align: center;
+        font-weight: bold;
     }
 
-    td { border: 1px solid #ccc; padding: 5px !important; text-align: center; vertical-align: middle; }
+    td { border: 1px solid #ccc; padding: 4px !important; text-align: center; vertical-align: middle; height: 40px; }
 
     /* মেম্বারদের নামের কলাম */
-    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 10px !important; min-width: 100px; }
+    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 8px !important; width: 100px; }
 
-    /* ইনপুট বক্সগুলো স্বাভাবিক সাদা রাখার জন্য */
+    /* ইনপুট বক্স সুন্দর করার জন্য */
     td input { 
         width: 85%; 
-        height: 35px; 
+        height: 28px; 
         text-align: center; 
         border: 1px solid #ddd; 
         border-radius: 4px; 
-        font-size: 14px;
+        font-size: 13px;
+        outline: none;
     }
 
-    /* মোট খরচ কলাম */
-    .col-cost { background-color: #f8f9fa; font-weight: bold; color: #333; width: 80px; }
+    /* মোট খরচ ও পাওনা/দেনার কালার */
+    .col-cost { font-weight: bold; color: #333; background: #fdfdfd; }
+    .col-result-pabe { color: #1b5e20; font-weight: bold; background: #e8f5e9; font-size: 11px; }
+    .col-result-dibe { color: #b71c1c; font-weight: bold; background: #ffebee; font-size: 11px; }
 
-    /* পাওনা/দেনার ঘর */
-    .col-result-pabe { background-color: #e8f5e9; color: #1b5e20; font-weight: bold; min-width: 90px; font-size: 12px; }
-    .col-result-dibe { background-color: #ffebee; color: #b71c1c; font-weight: bold; min-width: 90px; font-size: 12px; }
-
-    .total-row { background: #eee; font-weight: bold; height: 40px; }
+    .total-row { background: #eeeeee; font-weight: bold; height: 35px; }
     .footer-credit { text-align: center; margin-top: 15px; font-size: 11px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
 
     .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
@@ -103,11 +103,11 @@
 
     <div class="bill-grid">
         <div>গ্যাস <input type="number" id="gasBill" value="1080"></div>
-        <div>পানি <input type="number" id="waterBill" value="1200"></div>
+        <div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
         <div>বিদ্যুৎ <input type="number" id="currentBill" value="2000"></div>
         <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
-        <div>ওয়াইফাই <input type="number" id="wifiBill" value="1000"></div>
-        <div>ময়লা <input type="number" id="garbageBill" value="150"></div>
+        <div>ওয়াইফাই <input type="number" id="wifiBill" value="1000"></div>
+        <div>ময়লা <input type="number" id="garbageBill" value="150"></div>
         <div>খালা বিল <input type="number" id="wages" value="6000"></div>
     </div>
 
@@ -115,13 +115,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>নাম</th>
-                    <th>মিল</th>
-                    <th>বাজার</th>
-                    <th>জমা</th>
-                    <th>ভাড়া</th>
-                    <th>মোট খরচ</th>
-                    <th>পাওনা/দেনা</th>
+                    <th style="width: 22%;">নাম</th>
+                    <th style="width: 10%;">মিল</th>
+                    <th style="width: 13%;">বাজার</th>
+                    <th style="width: 13%;">জমা</th>
+                    <th style="width: 12%;">ভাড়া</th>
+                    <th style="width: 13%;">মোট খরচ</th>
+                    <th style="width: 17%;">পাওনা/দেনা</th>
                 </tr>
             </thead>
             <tbody id="memberRows"></tbody>
