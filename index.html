@@ -15,47 +15,47 @@
 
     .bill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; background: #fff3e0; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffe0b2; }
     .bill-grid div { display: flex; flex-direction: column; font-size: 11px; font-weight: bold; text-align: center; }
-    .bill-grid input { height: 30px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-top: 4px; }
+    .bill-grid input { height: 35px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-top: 4px; font-size: 14px; }
 
     .summary-box { display: flex; justify-content: center; margin-bottom: 15px; }
     .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
 
     .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; table-layout: fixed; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; table-layout: fixed; }
     
-    /* উপরের হেডার কালো করার জন্য */
+    /* শুধুমাত্র উপরের ঘরগুলো কালো করার জন্য */
     th { 
         background-color: #343a40 !important; 
         color: #ffffff !important; 
         border: 1px solid #ccc;
-        padding: 10px 2px !important;
+        padding: 12px 2px !important;
         text-align: center;
-        font-weight: bold;
+        font-size: 14px;
     }
 
-    td { border: 1px solid #ccc; padding: 4px !important; text-align: center; vertical-align: middle; height: 40px; }
+    /* নিচের ঘরগুলো বড় করার জন্য padding এবং height বাড়ানো হয়েছে */
+    td { border: 1px solid #ccc; padding: 8px !important; text-align: center; vertical-align: middle; height: 50px; }
 
-    /* মেম্বারদের নামের কলাম */
-    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 8px !important; width: 100px; }
+    /* নামের কলাম */
+    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 10px !important; width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     /* ইনপুট বক্স সুন্দর করার জন্য */
     td input { 
-        width: 85%; 
-        height: 28px; 
+        width: 90%; 
+        height: 38px; 
         text-align: center; 
         border: 1px solid #ddd; 
         border-radius: 4px; 
-        font-size: 13px;
-        outline: none;
+        font-size: 15px;
     }
 
-    /* মোট খরচ ও পাওনা/দেনার কালার */
-    .col-cost { font-weight: bold; color: #333; background: #fdfdfd; }
-    .col-result-pabe { color: #1b5e20; font-weight: bold; background: #e8f5e9; font-size: 11px; }
-    .col-result-dibe { color: #b71c1c; font-weight: bold; background: #ffebee; font-size: 11px; }
+    /* রেজাল্ট কলাম */
+    .col-cost { font-weight: bold; color: #333; font-size: 14px; }
+    .col-result-pabe { color: #1b5e20; font-weight: bold; background: #e8f5e9; font-size: 13px; }
+    .col-result-dibe { color: #b71c1c; font-weight: bold; background: #ffebee; font-size: 13px; }
 
-    .total-row { background: #eeeeee; font-weight: bold; height: 35px; }
-    .footer-credit { text-align: center; margin-top: 15px; font-size: 11px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
+    .total-row { background: #f1f3f5; font-weight: bold; height: 45px; }
+    .footer-credit { text-align: center; margin-top: 15px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
 
     .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
     .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; color: white; }
@@ -102,9 +102,9 @@
     </div>
 
     <div class="bill-grid">
-        <div>গ্যাস <input type="number" id="gasBill" value="1080"></div>
+        <div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
         <div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
-        <div>বিদ্যুৎ <input type="number" id="currentBill" value="2000"></div>
+        <div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
         <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
         <div>ওয়াইফাই <input type="number" id="wifiBill" value="1000"></div>
         <div>ময়লা <input type="number" id="garbageBill" value="150"></div>
@@ -115,13 +115,13 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 22%;">নাম</th>
+                    <th style="width: 25%;">নাম</th>
                     <th style="width: 10%;">মিল</th>
-                    <th style="width: 13%;">বাজার</th>
-                    <th style="width: 13%;">জমা</th>
+                    <th style="width: 12%;">বাজার</th>
+                    <th style="width: 12%;">জমা</th>
                     <th style="width: 12%;">ভাড়া</th>
-                    <th style="width: 13%;">মোট খরচ</th>
-                    <th style="width: 17%;">পাওনা/দেনা</th>
+                    <th style="width: 12%;">মোট</th>
+                    <th style="width: 17%;">পাওনা</th>
                 </tr>
             </thead>
             <tbody id="memberRows"></tbody>
@@ -149,7 +149,7 @@
 <script>
 const membersList = [
     { name: "Mr. Aminul", rent: 1760 }, { name: "Mr. Utsob", rent: 1760 },
-    { name: "Mr. Faysal", rent: 1760 }, { name: "Mr. Morshed", rent: 1760 },
+    { name: "Mr. Foysal", rent: 1760 }, { name: "Mr. Morshed", rent: 1760 },
     { name: "Mr. Rejaul", rent: 2085 }, { name: "Mr. Arif", rent: 2085 },
     { name: "Mr. Mintu", rent: 2085 }, { name: "Mr. Tarak", rent: 2235 },
     { name: "Mr. Rakib", rent: 2235 }, { name: "Mr. Zia", rent: 2235 }
