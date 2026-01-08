@@ -42,7 +42,21 @@ th { background: #343a40; color: white; }
         color: white !important;
     }
 }}
-.col-blue { background-color: #e3f2fd; font-weight: bold; }
+.col-blue { /* মোট খরচ কলাম কালো করার জন্য */
+.col-blue { 
+    background-color: #000000 !important; /* কালো ব্যাকগ্রাউন্ড */
+    color: #ffffff !important; /* সাদা লেখা */
+    font-weight: bold;
+}
+
+/* পিডিএফ প্রিন্ট সেটিংস (মোট খরচ কলামের জন্য) */
+@media print {
+    .col-blue {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact; 
+    }
+} }
 .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
 .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
 
@@ -100,7 +114,7 @@ th { background: #343a40; color: white; }
 
     <div class="bill-grid">
         <div>গ্যাস বিল <input type="number" id="gasBill" value="1080"></div>
-        <div>पानी বিল <input type="number" id="waterBill" value="1200"></div>
+        <div>পানি বিল <input type="number" id="waterBill" value="1200"></div>
         <div>বিদ্যুৎ বিল <input type="number" id="currentBill" value="2000"></div>
         <div>খাবার পানি <input type="number" id="waterBottle" value="850"></div>
         <div>ইন্টারনেট <input type="number" id="wifiBill" value="1000"></div>
@@ -112,11 +126,11 @@ th { background: #343a40; color: white; }
         <table>
             <thead>
                 <tr>
-                    <th>সদস্যের নাম</th>
+                    <th>নাম</th>
                     <th>মিল</th>
                     <th class="col-green">বাজার</th>
-                    <th class="col-green">অগ্রিম/জমা</th>
-                    <th>ঘর ভাড়া</th>
+                    <th class="col-green">জমা</th>
+                    <th>বাসা ভাড়া</th>
                     <th class="col-blue">মোট খরচ</th>
                     <th>পাওনা/দেনা</th>
                 </tr>
