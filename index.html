@@ -8,7 +8,7 @@
 <style>
     body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
     .container { max-width: 1000px; background: white; padding: 15px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-    h1 { text-align: center; color: #0056b3; margin-bottom: 10px; text-transform: uppercase; font-size: 22px; }
+    h1 { text-align: center; color: #0056b3; margin-bottom: 5px; text-transform: uppercase; font-size: 22px; }
     
     .date-picker { text-align: center; margin-bottom: 15px; }
     select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; height: 35px; margin: 2px; }
@@ -21,48 +21,40 @@
     .rate-card { background: #0056b3; color: white; padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 16px; }
 
     .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; }
     
-    /* টেবিলের উপরের সব হেডার কালো করা */
+    /* শুধুমাত্র উপরের হেডার কালো করার জন্য */
     th { 
-        background-color: #000000 !important; 
+        background-color: #343a40 !important; 
         color: #ffffff !important; 
         border: 1px solid #444;
-        padding: 10px !important;
-        text-transform: uppercase;
-    }
-
-    td { border: 1px solid #ccc; padding: 6px !important; text-align: center; vertical-align: middle; }
-
-    /* নামের কলাম */
-    td:first-child { width: 100px; font-weight: bold; text-align: left; background: #f9f9f9; }
-
-    /* বাজার এবং জমা কলাম সম্পূর্ণ কালো করা */
-    .col-black { 
-        background-color: #000000 !important; 
-        color: #ffffff !important; 
-    }
-
-    /* কালো কলামের ভেতরের ইনপুট বক্স */
-    .col-black input {
-        background-color: #333 !important;
-        color: #fff !important;
-        border: 1px solid #555 !important;
-        width: 90% !important;
-        height: 32px !important;
+        padding: 12px 5px !important;
         text-align: center;
-        border-radius: 4px;
     }
 
-    /* সাধারণ ইনপুট বক্স */
-    td input { width: 90%; height: 32px; text-align: center; border: 1px solid #ddd; border-radius: 4px; }
+    td { border: 1px solid #ccc; padding: 5px !important; text-align: center; vertical-align: middle; }
 
-    /* রেজাল্ট ঘরগুলো */
-    .col-blue-res { background-color: #e3f2fd; color: #0d47a1; font-weight: bold; height: 45px; font-size: 14px; }
-    .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; height: 45px; }
-    .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; height: 45px; }
+    /* মেম্বারদের নামের কলাম */
+    td:first-child { font-weight: bold; text-align: left; background: #f9f9f9; padding-left: 10px !important; min-width: 100px; }
 
-    .total-row { background: #343a40; color: white; font-weight: bold; height: 35px; }
+    /* ইনপুট বক্সগুলো স্বাভাবিক সাদা রাখার জন্য */
+    td input { 
+        width: 85%; 
+        height: 35px; 
+        text-align: center; 
+        border: 1px solid #ddd; 
+        border-radius: 4px; 
+        font-size: 14px;
+    }
+
+    /* মোট খরচ কলাম */
+    .col-cost { background-color: #f8f9fa; font-weight: bold; color: #333; width: 80px; }
+
+    /* পাওনা/দেনার ঘর */
+    .col-result-pabe { background-color: #e8f5e9; color: #1b5e20; font-weight: bold; min-width: 90px; font-size: 12px; }
+    .col-result-dibe { background-color: #ffebee; color: #b71c1c; font-weight: bold; min-width: 90px; font-size: 12px; }
+
+    .total-row { background: #eee; font-weight: bold; height: 40px; }
     .footer-credit { text-align: center; margin-top: 15px; font-size: 11px; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
 
     .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
@@ -71,7 +63,7 @@
     .btn-pdf { background: #dc3545; }
 
     @media print {
-        th, .col-black { background-color: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+        th { background-color: #343a40 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
         .btn-area, select { display: none !important; }
     }
 </style>
@@ -175,10 +167,10 @@ membersList.forEach((m, i) => {
     <tr>
         <td>${m.name}</td>
         <td><input type="number" id="mMeal${i}" value="0"></td>
-        <td class="col-black"><input type="number" id="mBazar${i}" value="0"></td>
-        <td class="col-black"><input type="number" id="mAdv${i}" value="0"></td>
+        <td><input type="number" id="mBazar${i}" value="0"></td>
+        <td><input type="number" id="mAdv${i}" value="0"></td>
         <td><input type="number" id="mRent${i}" value="${m.rent}"></td>
-        <td id="mTotal${i}" class="col-blue-res">0</td>
+        <td id="mTotal${i}" class="col-cost">0</td>
         <td id="mFinal${i}">-</td>
     </tr>`;
 });
