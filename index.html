@@ -7,9 +7,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
     body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
-    .container { max-width: 1050px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .container { max-width: 1200px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative; }
     h1 { text-align: center; color: #0056b3; margin-bottom: 5px; text-transform: uppercase; }
-    
     .date-picker { text-align: center; margin-bottom: 20px; }
     select { padding: 5px 15px; border-radius: 5px; border: 1px solid #0056b3; font-weight: bold; background: white; cursor: pointer; }
 
@@ -24,14 +23,11 @@
     table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     
-    /* হেডার ডিজাইন পরিবর্তন */
-    th { background: #343a40; color: white; font-weight: normal; }
-    .black-header { background: #343a40 !important; color: white !important; }
-
+    /* আপনার চাহিদা মতো সব কালার এখানে রাখা হয়েছে */
+    th { background: #343a40 !important; color: white !important; font-weight: normal; }
     .col-green-bg { background-color: #e8f5e9; }
     .col-blue-bg { background-color: #e3f2fd; }
     .col-blue-text { color: #0056b3; font-weight: bold; }
-    
     .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
     .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
 
@@ -39,17 +35,15 @@
     .footer-credit { text-align: center; margin-top: 30px; font-size: 14px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
     .footer-credit span { color: #0056b3; }
 
-    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; max-width: 1050px; margin-left: auto; margin-right: auto; }
+    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; }
     .btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; }
     .btn-calc { background: #28a745; }
     .btn-pdf { background: #dc3545; }
-
-    /* PDF এ ইনপুট ফিল্ডের বর্ডার সুন্দর দেখানোর জন্য */
-    input { border: 1px solid #ddd; border-radius: 3px; text-align: center; }
 </style>
 </head>
 <body>
 
+<div id="pdf-content">
 <div class="container" id="report-area">
     <h1>ABC MASS</h1>
     <div class="date-picker">
@@ -94,14 +88,17 @@
                 <tr>
                     <th>নাম</th>
                     <th>মিল</th>
-                    <th class="black-header">বাজার</th> <th class="black-header">জমা</th> <th>বাসা ভাড়া</th>
-                    <th class="black-header">মাসের মোট খরচ</th> <th>নিট পাওনা/দেনা</th>
+                    <th style="background:#343a40 !important">বাজার</th>
+                    <th style="background:#343a40 !important">জমা</th>
+                    <th>বাসা ভাড়া</th>
+                    <th style="background:#343a40 !important">মাসের মোট খরচ</th>
+                    <th>নিট পাওনা/দেনা</th>
                 </tr>
             </thead>
             <tbody id="memberRows"></tbody>
             <tfoot>
                 <tr class="total-row">
-                    <td>মোট:</td>
+                    <td>TOTAL:</td>
                     <td id="grandTotalMeal">0</td>
                     <td id="grandTotalBazar">0</td>
                     <td id="grandTotalAdv">0</td>
@@ -116,6 +113,7 @@
     <div class="footer-credit">
         Designed & Created by <span>Foysal Ahammed</span>
     </div>
+</div>
 </div>
 
 <div class="btn-area">
@@ -214,21 +212,22 @@ function downloadPDF() {
     const year = document.getElementById('selectYear').value;
     
     const opt = {
-        margin: [0.3, 0.3],
+        margin: [0.2, 0.2],
         filename: `ABC_MASS_Report_${month}_${year}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
-            scale: 2, 
+            scale: 3, 
             useCORS: true,
-            letterRendering: true 
+            logging: false,
+            letterRendering: true
         },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
     };
+
     html2pdf().set(opt).from(element).save();
 }
 
 window.onload = initRows;
 </script>
-
 </body>
 </html>
