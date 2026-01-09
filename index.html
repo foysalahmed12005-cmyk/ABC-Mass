@@ -23,14 +23,15 @@
     table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     
-    th { background: #343a40 !important; color: white !important; font-weight: normal; -webkit-print-color-adjust: exact; }
-    .col-green-bg { background-color: #e8f5e9 !important; }
-    .col-blue-bg { background-color: #e3f2fd !important; }
+    /* হেডার ডিজাইন */
+    th { background: #343a40 !important; color: white !important; font-weight: normal; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .col-green-bg { background-color: #e8f5e9 !important; -webkit-print-color-adjust: exact; }
+    .col-blue-bg { background-color: #e3f2fd !important; -webkit-print-color-adjust: exact; }
     .col-blue-text { color: #0056b3; font-weight: bold; }
-    .col-result-pabe { background-color: #c8e6c9 !important; color: #1b5e20; font-weight: bold; }
-    .col-result-dibe { background-color: #ffcdd2 !important; color: #b71c1c; font-weight: bold; }
+    .col-result-pabe { background-color: #c8e6c9 !important; color: #1b5e20; font-weight: bold; -webkit-print-color-adjust: exact; }
+    .col-result-dibe { background-color: #ffcdd2 !important; color: #b71c1c; font-weight: bold; -webkit-print-color-adjust: exact; }
 
-    .total-row { background: #f1f3f5 !important; font-weight: bold; font-size: 14px; }
+    .total-row { background: #f1f3f5 !important; font-weight: bold; font-size: 14px; -webkit-print-color-adjust: exact; }
     .footer-credit { text-align: center; margin-top: 30px; font-size: 14px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
     .footer-credit span { color: #0056b3; }
 
@@ -38,6 +39,11 @@
     .btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; }
     .btn-calc { background: #28a745; }
     .btn-pdf { background: #dc3545; }
+
+    /* PDF তে অপ্রয়োজনীয় ব্রেক বন্ধ করার জন্য */
+    @media print {
+        #report-area { width: 100%; margin: 0; padding: 10px; }
+    }
 </style>
 </head>
 <body>
@@ -208,18 +214,18 @@ function downloadPDF() {
     const month = document.getElementById('selectMonth').value;
     const year = document.getElementById('selectYear').value;
     
-    // PDF সেটিংস: 'avoid' ব্যবহার করে মাঝখানের সাদা দাগ বা পেজ ব্রেক বন্ধ করা হয়েছে
     const opt = {
-        margin: [0.3, 0.3, 0.3, 0.3], 
+        margin: 0.2,
         filename: `ABC_MASS_Report_${month}_${year}.pdf`,
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
             scale: 2, 
             useCORS: true,
-            logging: false
+            scrollY: 0,
+            scrollX: 0
         },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
-        pagebreak: { mode: 'avoid' } 
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
     html2pdf().set(opt).from(element).save();
