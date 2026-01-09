@@ -23,7 +23,6 @@
     table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     
-    /* আপনার চাহিদা মতো সব কালার এখানে রাখা হয়েছে */
     th { background: #343a40 !important; color: white !important; font-weight: normal; }
     .col-green-bg { background-color: #e8f5e9; }
     .col-blue-bg { background-color: #e3f2fd; }
@@ -39,11 +38,13 @@
     .btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; }
     .btn-calc { background: #28a745; }
     .btn-pdf { background: #dc3545; }
+
+    /* PDF এর জন্য বিশেষ সেটিং যাতে মাঝখানে পেজ ব্রেক না হয় */
+    .html2pdf__page-break { display: none; }
 </style>
 </head>
 <body>
 
-<div id="pdf-content">
 <div class="container" id="report-area">
     <h1>ABC MASS</h1>
     <div class="date-picker">
@@ -113,7 +114,6 @@
     <div class="footer-credit">
         Designed & Created by <span>Foysal Ahammed</span>
     </div>
-</div>
 </div>
 
 <div class="btn-area">
@@ -212,16 +212,17 @@ function downloadPDF() {
     const year = document.getElementById('selectYear').value;
     
     const opt = {
-        margin: [0.2, 0.2],
+        margin: [0.1, 0.1], // মার্জিন কমানো হয়েছে যাতে গ্যাপ না থাকে
         filename: `ABC_MASS_Report_${month}_${year}.pdf`,
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
-            scale: 3, 
+            scale: 2, 
             useCORS: true,
             logging: false,
             letterRendering: true
         },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
+        pagebreak: { mode: 'avoid-all' } // এটি মাঝখানের দাগ বা গ্যাপ রোধ করবে
     };
 
     html2pdf().set(opt).from(element).save();
