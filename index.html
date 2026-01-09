@@ -6,9 +6,10 @@
 <title>ABC MASS Manager</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-    body { font-family: 'Arial', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
-    .container { max-width: 1200px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative; }
+    body { font-family: 'Arial', sans-serif; background: #f4f7f9; padding: 10px; margin: 0; color: #333; }
+    .container { max-width: 1050px; background: white; padding: 20px; border-radius: 10px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
     h1 { text-align: center; color: #0056b3; margin-bottom: 5px; text-transform: uppercase; }
+    
     .date-picker { text-align: center; margin-bottom: 20px; }
     select { padding: 5px 15px; border-radius: 5px; border: 1px solid #0056b3; font-weight: bold; background: white; cursor: pointer; }
 
@@ -23,15 +24,14 @@
     table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     
-    /* Header Styles - updated to match your request */
-    th { background: #343a40; color: white; font-weight: bold; }
-    
+    /* হেডার ডিজাইন পরিবর্তন */
+    th { background: #343a40; color: white; font-weight: normal; }
+    .black-header { background: #343a40 !important; color: white !important; }
+
     .col-green-bg { background-color: #e8f5e9; }
     .col-blue-bg { background-color: #e3f2fd; }
-    
-    /* Highlight Classes */
-    .col-green-text { color: #2e7d32; font-weight: bold; }
     .col-blue-text { color: #0056b3; font-weight: bold; }
+    
     .col-result-pabe { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; }
     .col-result-dibe { background-color: #ffcdd2; color: #b71c1c; font-weight: bold; }
 
@@ -39,19 +39,13 @@
     .footer-credit { text-align: center; margin-top: 30px; font-size: 14px; color: #555; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px; }
     .footer-credit span { color: #0056b3; }
 
-    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; }
-    .btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
+    .btn-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; max-width: 1050px; margin-left: auto; margin-right: auto; }
+    .btn { padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; }
     .btn-calc { background: #28a745; }
     .btn-pdf { background: #dc3545; }
-    .btn:hover { opacity: 0.9; }
 
-    /* PDF Print Optimization */
-    @media print {
-        .btn-area { display: none; }
-        body { background: white; padding: 0; }
-        .container { box-shadow: none; border: none; width: 100%; }
-        input { border: none; background: transparent; text-align: center; }
-    }
+    /* PDF এ ইনপুট ফিল্ডের বর্ডার সুন্দর দেখানোর জন্য */
+    input { border: 1px solid #ddd; border-radius: 3px; text-align: center; }
 </style>
 </head>
 <body>
@@ -77,7 +71,6 @@
             <option value="২০২৪">২০২৪</option>
             <option value="২০২৫" selected>২০২৫</option>
             <option value="২০২৬">২০২৬</option>
-            <option value="২০২৭">২০২৭</option>
         </select>
     </div>
 
@@ -101,14 +94,14 @@
                 <tr>
                     <th>নাম</th>
                     <th>মিল</th>
-                    <th>বাজার</th> <th>জমা</th>   <th>বাসা ভাড়া</th>
-                    <th>মাসের মোট খরচ</th> <th>নিট পাওনা/দেনা</th>
+                    <th class="black-header">বাজার</th> <th class="black-header">জমা</th> <th>বাসা ভাড়া</th>
+                    <th class="black-header">মাসের মোট খরচ</th> <th>নিট পাওনা/দেনা</th>
                 </tr>
             </thead>
             <tbody id="memberRows"></tbody>
             <tfoot>
                 <tr class="total-row">
-                    <td>TOTAL:</td>
+                    <td>মোট:</td>
                     <td id="grandTotalMeal">0</td>
                     <td id="grandTotalBazar">0</td>
                     <td id="grandTotalAdv">0</td>
@@ -224,7 +217,11 @@ function downloadPDF() {
         margin: [0.3, 0.3],
         filename: `ABC_MASS_Report_${month}_${year}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true,
+            letterRendering: true 
+        },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
     };
     html2pdf().set(opt).from(element).save();
